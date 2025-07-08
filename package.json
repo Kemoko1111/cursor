@@ -1,0 +1,39 @@
+{
+  "name": "car-service-tracker",
+  "version": "1.0.0",
+  "description": "Car Service Tracking System with QR codes and SMS reminders",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "nodemon server/index.js",
+    "client": "cd client && npm start",
+    "build": "cd client && npm run build",
+    "install-all": "npm install && cd client && npm install"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "sqlite3": "^5.1.6",
+    "qrcode": "^1.5.3",
+    "twilio": "^4.19.3",
+    "uuid": "^9.0.1",
+    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "moment": "^2.29.4",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "concurrently": "^8.2.2"
+  },
+  "keywords": [
+    "car-service",
+    "qr-code",
+    "tracking",
+    "sms-reminders",
+    "workshop"
+  ],
+  "author": "Car Service Tracker",
+  "license": "MIT"
+}
