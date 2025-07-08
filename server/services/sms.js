@@ -2,15 +2,34 @@ const twilio = require('twilio');
 const { getDatabase } = require('../database/init');
 
 // Twilio configuration (use environment variables in production)
-const accountSid = process.env.TWILIO_ACCOUNT_SID || 'your_account_sid';
-const authToken = process.env.TWILIO_AUTH_TOKEN || 'your_auth_token';
+const accountSid = process.env.TWILIO_ACCOUNT_SID || 'ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+const authToken = process.env.TWILIO_AUTH_TOKEN || 'your_auth_token_here';
 const fromNumber = process.env.TWILIO_PHONE_NUMBER || '+1234567890';
 
-const client = twilio(accountSid, authToken);
+let client = null;
+
+const getTwilioClient = () => {
+  if (!client && accountSid.startsWith('AC') && authToken !== 'your_auth_token_here') {
+    try {
+      client = twilio(accountSid, authToken);
+    } catch (error) {
+      console.error('Failed to initialize Twilio client:', error.message);
+      return null;
+    }
+  }
+  return client;
+};
 
 const sendSMS = async (to, message) => {
+  const twilioClient = getTwilioClient();
+  
+  if (!twilioClient) {
+    console.log('SMS would be sent (Twilio not configured):', { to, message });
+    return { success: true, sid: 'demo_' + Date.now(), demo: true };
+  }
+  
   try {
-    const result = await client.messages.create({
+    const result = await twilioClient.messages.create({
       body: message,
       from: fromNumber,
       to: to
